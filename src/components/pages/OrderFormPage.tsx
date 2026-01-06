@@ -11,8 +11,9 @@ import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { BaseCrudService } from '@/integrations';
 import { OrdensdeServio } from '@/entities';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function OrderFormPage() {
   const { id } = useParams();
@@ -28,7 +29,11 @@ export default function OrderFormPage() {
     scheduledDate: '',
     priority: 'MEDIA',
     notes: '',
+    technicianName: '',
   });
+
+  const [originalStatus, setOriginalStatus] = useState<string>('');
+  const [validationError, setValidationError] = useState<string>('');
 
   useEffect(() => {
     if (isEdit && id) {
@@ -47,11 +52,20 @@ export default function OrderFormPage() {
       scheduledDate: order.scheduledDate ? new Date(order.scheduledDate).toISOString().split('T')[0] : '',
       priority: order.priority || 'MEDIA',
       notes: order.notes || '',
+      technicianName: order.technicianName || '',
     });
+    setOriginalStatus(order.status || 'PENDENTE');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationError('');
+
+    // Validation: if status is EXECUTADO, technicianName is required
+    if (formData.status === 'EXECUTADO' && !formData.technicianName.trim()) {
+      setValidationError('Nome do técnico é obrigatório quando o status é "Executado"');
+      return;
+    }
 
     const orderData: Partial<OrdensdeServio> = {
       orderNumber: formData.orderNumber,
@@ -61,6 +75,7 @@ export default function OrderFormPage() {
       scheduledDate: formData.scheduledDate ? new Date(formData.scheduledDate).toISOString() : undefined,
       priority: formData.priority,
       notes: formData.notes,
+      technicianName: formData.technicianName,
     };
 
     if (isEdit && id) {
@@ -108,6 +123,24 @@ export default function OrderFormPage() {
           </div>
 
           <form onSubmit={handleSubmit}>
+            {validationError && (
+              <Alert className="mb-6 bg-destructive/10 border border-destructive/30">
+                <AlertCircle className="h-4 w-4 text-destructive" />
+                <AlertDescription className="text-destructive ml-2">
+                  {validationError}
+                </AlertDescription>
+              </Alert>
+            )}
+
+            {isEdit && originalStatus === 'EXECUTADO' && (
+              <Alert className="mb-6 bg-status-executado/10 border border-status-executado/30">
+                <AlertCircle className="h-4 w-4 text-status-executado" />
+                <AlertDescription className="text-status-executado ml-2">
+                  Esta ordem foi marcada como Executada e não pode ser editada.
+                </AlertDescription>
+              </Alert>
+            )}
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6">
                 <Card className="bg-[#1A1A1A] border border-[#2A2A2A] p-8">
@@ -189,13 +222,38 @@ export default function OrderFormPage() {
                     className="bg-[#0D0D0D] border-[#2A2A2A] text-white placeholder:text-foreground/40"
                   />
                 </Card>
+
+                {formData.status === 'EXECUTADO' && (
+                  <Card className="bg-[#1A1A1A] border border-status-executado/30 p-8">
+                    <h2 className="font-heading text-2xl text-white font-bold uppercase tracking-wider mb-6">Técnico Responsável</h2>
+                    <div>
+                      <Label htmlFor="technicianName" className="font-paragraph text-xs text-foreground/80 uppercase tracking-wider">
+                        Nome do Técnico *
+                      </Label>
+                      <Input
+                        id="technicianName"
+                        value={formData.technicianName}
+                        onChange={(e) => setFormData({ ...formData, technicianName: e.target.value })}
+                        placeholder="Digite o nome do técnico responsável..."
+                        className="mt-2 bg-[#0D0D0D] border-status-executado/30 text-white placeholder:text-foreground/40"
+                      />
+                      <p className="font-paragraph text-xs text-status-executado mt-2">
+                        Campo obrigatório para ordens executadas
+                      </p>
+                    </div>
+                  </Card>
+                )}
               </div>
 
               <div className="space-y-6">
                 <Card className="bg-[#1A1A1A] border border-[#2A2A2A] p-8">
                   <h2 className="font-heading text-2xl text-white font-bold uppercase tracking-wider mb-6">Status</h2>
-                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
-                    <SelectTrigger className="bg-[#0D0D0D] border-[#2A2A2A] text-white">
+                  <Select 
+                    value={formData.status} 
+                    onValueChange={(value) => setFormData({ ...formData, status: value })}
+                    disabled={isEdit && originalStatus === 'EXECUTADO'}
+                  >
+                    <SelectTrigger className="bg-[#0D0D0D] border-[#2A2A2A] text-white disabled:opacity-50 disabled:cursor-not-allowed">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -208,7 +266,11 @@ export default function OrderFormPage() {
                 </Card>
 
                 <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/30 p-8">
-                  <Button type="submit" className="w-full bg-primary text-black hover:bg-primary/90 font-heading uppercase tracking-wider py-6">
+                  <Button 
+                    type="submit" 
+                    disabled={isEdit && originalStatus === 'EXECUTADO'}
+                    className="w-full bg-primary text-black hover:bg-primary/90 font-heading uppercase tracking-wider py-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
                     <Save className="w-4 h-4 mr-2" />
                     {isEdit ? 'Atualizar Ordem' : 'Criar Ordem'}
                   </Button>

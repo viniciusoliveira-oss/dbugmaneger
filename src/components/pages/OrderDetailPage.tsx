@@ -7,9 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { BaseCrudService } from '@/integrations';
 import { OrdensdeServio, UsuriosdoSistema } from '@/entities';
-import { ArrowLeft, Edit, Trash2 } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, AlertCircle } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function OrderDetailPage() {
   const { id } = useParams();
@@ -64,8 +65,9 @@ export default function OrderDetailPage() {
   };
 
   const canChangeStatus = currentUser?.accessLevel === 'MANAGER' || currentUser?.accessLevel === 'ADMIN' || currentUser?.accessLevel === 'ANALIST';
-  const canEdit = currentUser?.accessLevel === 'MANAGER' || currentUser?.accessLevel === 'ADMIN';
+  const canEdit = (currentUser?.accessLevel === 'MANAGER' || currentUser?.accessLevel === 'ADMIN') && order?.status !== 'EXECUTADO';
   const canDelete = currentUser?.accessLevel === 'MANAGER';
+  const isOrderExecuted = order?.status === 'EXECUTADO';
 
   if (!order) {
     return (
@@ -117,6 +119,15 @@ export default function OrderDetailPage() {
             </div>
           </div>
 
+          {isOrderExecuted && (
+            <Alert className="mb-6 bg-status-executado/10 border border-status-executado/30">
+              <AlertCircle className="h-4 w-4 text-status-executado" />
+              <AlertDescription className="text-status-executado ml-2">
+                Esta ordem foi marcada como Executada e não pode ser editada.
+              </AlertDescription>
+            </Alert>
+          )}
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
               <Card className="bg-[#1A1A1A] border border-[#2A2A2A] p-8">
@@ -154,6 +165,13 @@ export default function OrderDetailPage() {
                 <Card className="bg-[#1A1A1A] border border-[#2A2A2A] p-8">
                   <h2 className="font-heading text-2xl text-white font-bold uppercase tracking-wider mb-6">Observações</h2>
                   <p className="font-paragraph text-base text-white leading-relaxed">{order.notes}</p>
+                </Card>
+              )}
+
+              {order.technicianName && (
+                <Card className="bg-[#1A1A1A] border border-status-executado/30 p-8">
+                  <h2 className="font-heading text-2xl text-white font-bold uppercase tracking-wider mb-6">Técnico Responsável</h2>
+                  <p className="font-paragraph text-lg text-white">{order.technicianName}</p>
                 </Card>
               )}
             </div>
