@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import TabNavigation from '@/components/TabNavigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -91,7 +92,7 @@ export default function ReportsPage() {
   const filteredOrders = getFilteredOrders();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col pb-32">
       <Header />
       
       <main className="flex-1">
@@ -233,6 +234,7 @@ export default function ReportsPage() {
       </main>
 
       <Footer />
+      <TabNavigation />
     </div>
   );
 }

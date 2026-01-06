@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import TabNavigation from '@/components/TabNavigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { BaseCrudService } from '@/integrations';
@@ -68,18 +69,19 @@ export default function OrderDetailPage() {
 
   if (!order) {
     return (
-      <div className="min-h-screen bg-background flex flex-col">
+      <div className="min-h-screen bg-background flex flex-col pb-32">
         <Header />
         <main className="flex-1 flex items-center justify-center">
           <p className="font-paragraph text-foreground/60">Carregando...</p>
         </main>
         <Footer />
+        <TabNavigation />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col pb-32">
       <Header />
       
       <main className="flex-1">
@@ -206,6 +208,7 @@ export default function OrderDetailPage() {
       </main>
 
       <Footer />
+      <TabNavigation />
     </div>
   );
 }

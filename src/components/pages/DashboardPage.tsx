@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import TabNavigation from '@/components/TabNavigation';
 import { Card } from '@/components/ui/card';
 import { BaseCrudService } from '@/integrations';
 import { OrdensdeServio } from '@/entities';
@@ -63,7 +64,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col pb-32">
       <Header />
       
       <main className="flex-1">
@@ -168,6 +169,7 @@ export default function DashboardPage() {
       </main>
 
       <Footer />
+      <TabNavigation />
     </div>
   );
 }

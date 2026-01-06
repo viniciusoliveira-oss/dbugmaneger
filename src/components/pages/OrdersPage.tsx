@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import TabNavigation from '@/components/TabNavigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -55,7 +56,7 @@ export default function OrdersPage() {
   const canCreateOrder = currentUser?.accessLevel === 'MANAGER' || currentUser?.accessLevel === 'ADMIN' || currentUser?.accessLevel === 'USER';
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col pb-32">
       <Header />
       
       <main className="flex-1">
@@ -158,6 +159,7 @@ export default function OrdersPage() {
       </main>
 
       <Footer />
+      <TabNavigation />
     </div>
   );
 }
