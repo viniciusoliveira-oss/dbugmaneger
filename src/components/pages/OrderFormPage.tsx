@@ -200,34 +200,6 @@ export default function OrderFormPage() {
                         </SelectContent>
                       </Select>
                     </div>
-                  </div>
-                </Card>
-
-                <Card className="bg-[#1A1A1A] border border-[#2A2A2A] p-8">
-                  <h2 className="font-heading text-2xl text-white font-bold uppercase tracking-wider mb-6">Descrição</h2>
-                  <Textarea
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Descreva os detalhes da ordem de serviço..."
-                    rows={6}
-                    className="bg-[#0D0D0D] border-[#2A2A2A] text-white placeholder:text-foreground/40"
-                  />
-                </Card>
-
-                <Card className="bg-[#1A1A1A] border border-[#2A2A2A] p-8">
-                  <h2 className="font-heading text-2xl text-white font-bold uppercase tracking-wider mb-6">Observações</h2>
-                  <Textarea
-                    value={formData.notes}
-                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    placeholder="Adicione observações adicionais..."
-                    rows={4}
-                    className="bg-[#0D0D0D] border-[#2A2A2A] text-white placeholder:text-foreground/40"
-                  />
-                </Card>
-
-                <Card className="bg-[#1A1A1A] border border-[#2A2A2A] p-8">
-                  <h2 className="font-heading text-2xl text-white font-bold uppercase tracking-wider mb-6">Técnico e Equipe</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <Label htmlFor="technicianName" className="font-paragraph text-xs text-foreground/80 uppercase tracking-wider">
                         Nome do Técnico
@@ -253,6 +225,28 @@ export default function OrderFormPage() {
                       />
                     </div>
                   </div>
+                </Card>
+
+                <Card className="bg-[#1A1A1A] border border-[#2A2A2A] p-8">
+                  <h2 className="font-heading text-2xl text-white font-bold uppercase tracking-wider mb-6">Descrição</h2>
+                  <Textarea
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    placeholder="Descreva os detalhes da ordem de serviço..."
+                    rows={6}
+                    className="bg-[#0D0D0D] border-[#2A2A2A] text-white placeholder:text-foreground/40"
+                  />
+                </Card>
+
+                <Card className="bg-[#1A1A1A] border border-[#2A2A2A] p-8">
+                  <h2 className="font-heading text-2xl text-white font-bold uppercase tracking-wider mb-6">Observações</h2>
+                  <Textarea
+                    value={formData.notes}
+                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                    placeholder="Adicione observações adicionais..."
+                    rows={4}
+                    className="bg-[#0D0D0D] border-[#2A2A2A] text-white placeholder:text-foreground/40"
+                  />
                 </Card>
 
                 {formData.status === 'EXECUTADO' && (
