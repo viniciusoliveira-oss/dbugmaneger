@@ -30,6 +30,7 @@ export default function OrderFormPage() {
     priority: 'MEDIA',
     notes: '',
     technicianName: '',
+    team: '',
   });
 
   const [originalStatus, setOriginalStatus] = useState<string>('');
@@ -76,6 +77,7 @@ export default function OrderFormPage() {
       priority: formData.priority,
       notes: formData.notes,
       technicianName: formData.technicianName,
+      team: formData.team,
     };
 
     if (isEdit && id) {
@@ -221,6 +223,36 @@ export default function OrderFormPage() {
                     rows={4}
                     className="bg-[#0D0D0D] border-[#2A2A2A] text-white placeholder:text-foreground/40"
                   />
+                </Card>
+
+                <Card className="bg-[#1A1A1A] border border-[#2A2A2A] p-8">
+                  <h2 className="font-heading text-2xl text-white font-bold uppercase tracking-wider mb-6">Técnico e Equipe</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <Label htmlFor="technicianName" className="font-paragraph text-xs text-foreground/80 uppercase tracking-wider">
+                        Nome do Técnico
+                      </Label>
+                      <Input
+                        id="technicianName"
+                        value={formData.technicianName}
+                        onChange={(e) => setFormData({ ...formData, technicianName: e.target.value })}
+                        placeholder="Digite o nome do técnico..."
+                        className="mt-2 bg-[#0D0D0D] border-[#2A2A2A] text-white placeholder:text-foreground/40"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="team" className="font-paragraph text-xs text-foreground/80 uppercase tracking-wider">
+                        Equipe
+                      </Label>
+                      <Input
+                        id="team"
+                        value={formData.team}
+                        onChange={(e) => setFormData({ ...formData, team: e.target.value })}
+                        placeholder="Digite o nome da equipe..."
+                        className="mt-2 bg-[#0D0D0D] border-[#2A2A2A] text-white placeholder:text-foreground/40"
+                      />
+                    </div>
+                  </div>
                 </Card>
 
                 {formData.status === 'EXECUTADO' && (
