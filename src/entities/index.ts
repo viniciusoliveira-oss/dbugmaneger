@@ -25,8 +25,6 @@ export interface OrdensdeServio {
   priority?: string;
   /** @wixFieldType text */
   notes?: string;
-  /** @wixFieldType text */
-  technicianName?: string;
 }
 
 
