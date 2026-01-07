@@ -23,7 +23,7 @@ export default {
                 paragraph: "roboto"
             },
             colors: {
-                primary: "#c80a00ff",
+                primary: "#1260dfff",
                 "primary-foreground": "#151f30ff",
                 secondary: "#424242",
                 "secondary-foreground": "#faffe3ff",
